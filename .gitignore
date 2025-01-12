@@ -1,0 +1,7 @@
+dags/test_*
+credentials/*.json
+logs/*
+**/__pycache__/
+*.pyc
+data_mining
+.env
