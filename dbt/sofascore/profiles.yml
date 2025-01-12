@@ -1,0 +1,10 @@
+sofascore:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: foot-analyse
+      dataset: foot_data
+      location: US
+      keyfile: /usr/app/dbt/credentials/credentials.json

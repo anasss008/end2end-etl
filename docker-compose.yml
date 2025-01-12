@@ -72,3 +72,17 @@ services:
           max-file: "3"
       networks:
         - sofanet
+
+  dbt:
+      build:
+        context: ./dbt
+        dockerfile: Dockerfile
+      container_name: dbt
+      volumes:
+        - ./dbt/sofascore/profiles.yml:/root/.dbt/profiles.yml
+        - ./dbt/sofascore/:/usr/app/dbt/
+        - ./credentials/:/usr/app/dbt/credentials/
+      env_file:
+        - .env
+      networks:
+        - sofanet

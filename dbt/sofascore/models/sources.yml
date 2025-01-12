@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: foot_data
+    schema: foot_data
+    tables:
+      - name: results
+        identifier: football_results
