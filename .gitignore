@@ -5,3 +5,4 @@ logs/*
 *.pyc
 data_mining
 .env
+postgres-data
