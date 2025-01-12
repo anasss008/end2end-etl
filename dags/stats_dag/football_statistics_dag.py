@@ -39,7 +39,7 @@ def get_json_data(**context):
     if os.path.isfile(results_path):
         json_data = json.load(open(results_path))
 
-    if not json_data:
+    else:
         logger.info("Getting results..")
         scraper = ResultScraper()
         json_data = scraper.get_json(execution_date)
@@ -111,6 +111,14 @@ def load_to_bq(temp_file_name, **context):
     logging.info("Cleaned up temporary files.")
 
 
+@task.bash
+def run_dbt() -> str:
+    return '''
+    cd /opt/airflow/ || exit 1
+    dbt run --profiles-dir /opt/airflow
+    '''
+
+
 
 @dag(
     dag_id="football_results_dag_v2.1",
@@ -121,7 +129,7 @@ def load_to_bq(temp_file_name, **context):
         'owner': 'airflow',
         'depends_on_past': False,
         'retries': 3,  # Number of retries for all tasks in the DAG
-        'retry_delay': timedelta(minutes=1),  # Delay between retries for all tasks in the DAG
+        'retry_delay': timedelta(minutes=5),  # Delay between retries for all tasks in the DAG
     }
 )
 def football_results_dag():
@@ -129,19 +137,12 @@ def football_results_dag():
     raw_data_json = get_json_data()
     # extract desired informations from matches
     desired_info = extract_desired_info(raw_data_json)
-    # desired_info >> skip_or_continue
-    # skip or continue based on the availability of data
-    # skip_or_continue >> [end_, continue_]
-    # # fetch statistics of a specific match from Sofascore (possession, shots...etc)
-    # data_with_statistics = fetch_statistics()
-    # # fetch highlights of a specific match from Sofascore
-    # data_with_highlights = fetch_highlights()
-    # #continue if  data available
-    # continue_ >> [data_with_statistics, data_with_highlights]
-    # # merge statistics, highlights with the corresponding match data
+    # Prepare data to be loaded to BigQuery
     prepared_data = prepare_to_load(desired_info)
-    # load data to BigQuery
-    load_to_bq(prepared_data)
+    # Load data to BigQuery
+    load_2bq = load_to_bq(prepared_data)
+    # Run DBT dag
+    load_2bq >> run_dbt()    
 
 # start the dag
 football_results_dag()

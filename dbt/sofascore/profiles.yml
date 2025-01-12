@@ -7,4 +7,4 @@ sofascore:
       project: foot-analyse
       dataset: foot_data
       location: US
-      keyfile: /usr/app/dbt/credentials/credentials.json
+      keyfile: /opt/airflow/credentials/credentials.json

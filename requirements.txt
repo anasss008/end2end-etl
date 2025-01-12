@@ -1,5 +1,5 @@
 requests
 google-cloud-storage
 google-cloud-bigquery
-datetime
 psycopg2-binary
+dbt-bigquery
