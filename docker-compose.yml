@@ -11,6 +11,7 @@ services:
       command: webserver
       depends_on:
         - postgres
+      restart: on-failure
       env_file: .env
       environment:
         - LOAD_EX=n
@@ -40,6 +41,7 @@ services:
       image: apache/airflow:slim-latest-python3.11
       depends_on:
         - webserver
+        - postgres
       restart: on-failure
       volumes:
         - ./dags:/opt/airflow/dags
@@ -85,9 +87,6 @@ services:
     container_name: superset
     networks:
       - sofanet
-    volumes:
-      - ./apache_superset/superset_db:/app/superset_home
-      - ./apache_superset/superset_logs:/app/logs
     env_file:
       - .env
     ports:
