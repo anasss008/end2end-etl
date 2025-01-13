@@ -89,6 +89,8 @@ services:
       - sofanet
     env_file:
       - .env
+    volumes:
+      - ./credentials/:/app/credentials/
     ports:
       - '8088:8088'
     depends_on:

@@ -26,6 +26,7 @@ SELECT
   season,
   startTimestamp,
   country,
+  tournament,
   {{ team_info['team'] }} as team,
   {{ team_info['score'] }} as score,
   {{ team_info['goal_conceded'] }} as goal_conceded,
@@ -34,7 +35,7 @@ SELECT
     WHEN winner_code = 2 THEN {{ team_info['points'][1] }}
     ELSE {{ team_info['points'][2] }}
   END as match_point
-FROM {{ source('foot_data', 'results') }}
+FROM {{ ref('clean_table') }}
 WHERE status = 'finished'
 {% if not loop.last %}
 UNION ALL

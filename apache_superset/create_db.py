@@ -9,26 +9,22 @@ role_password = "superset"
 
 
 def create_db_role():
+    # Sleep 1 minute
+    time.sleep(60)
     # Create the database
-    try:
-        conn = psycopg2.connect(admin_conn_info)
-        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
-        cur = conn.cursor()
-        cur.execute(f"CREATE DATABASE {db_name};")
-        cur.close()
-        conn.close()
+    conn = psycopg2.connect(admin_conn_info)
+    conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+    cur = conn.cursor()
+    cur.execute(f"CREATE DATABASE {db_name};")
+    cur.close()
+    conn.close()
 
-        # Then connect again to create user and grant privileges
-        with psycopg2.connect(admin_conn_info) as conn:
-            conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
-            with conn.cursor() as cur:
-                cur.execute(f"CREATE USER {role_name} WITH PASSWORD '{role_password}';")
-                cur.execute(f"GRANT ALL PRIVILEGES ON DATABASE {db_name} TO {role_name};")
-    
-    except:
-        print("retry in 1min")
-        time.sleep(60)
-        create_db_role()
+    # Then connect again to create user and grant privileges
+    with psycopg2.connect(admin_conn_info) as conn:
+        conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+        with conn.cursor() as cur:
+            cur.execute(f"CREATE USER {role_name} WITH PASSWORD '{role_password}';")
+            cur.execute(f"GRANT ALL PRIVILEGES ON DATABASE {db_name} TO {role_name};")
 
 
 create_db_role()
