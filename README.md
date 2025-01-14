@@ -1,4 +1,4 @@
-### This work was realized by:
+### This work was realized as a part of a dev project by:
  - SARAB Ayoub
  - TAQI Anas
  - KHLAIF Mohamed
@@ -89,7 +89,14 @@ The core tasks in our dag are:
 - **prepare_to_load:** This task prepares the data for loading into BigQuery.
 - **load_to_bq:** This task loads the data into a BigQuery (BQ) table.
 - **run_dbt*:* Transform the raw data for further analytics.
+## 4- Data Warehouse
+We chose BigQuery as our data warehouse because it’s highly scalable, cost-effective, and seamlessly integrates with other Google Cloud services, which we’re already using in the project. Its serverless nature allows us to focus on analyzing data without worrying about infrastructure management.  
 
-## 4- Dashboard
+Additionally, BigQuery’s SQL interface is user-friendly and has a lower learning curve compared to more complex alternatives, making it accessible to our team. Since we already have expertise with Google Cloud tools, adopting BigQuery felt natural, allowing us to leverage our skills effectively without significant time spent on training.
+
+![image](https://github.com/user-attachments/assets/8032cdb4-e71f-4266-be54-ebbd5df3dda3)
+
+
+## 5- Dashboard
 We leverage the collected data to create an interactive dashboard using Apache Superset
 ![image](https://github.com/user-attachments/assets/5fa19fbb-cbe7-438c-b071-543ce5dfc57d)
